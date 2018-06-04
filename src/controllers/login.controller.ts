@@ -9,12 +9,12 @@ export class LoginController {
     @repository(UserRepository.name) private userRepo: UserRepository
   ) {}
 
-  @post('/users')
-  async sendUser(@requestBody() user: User) {
-    return await this.userRepo.create(User);
+  @post('/login/users')
+  async sendLogin(@requestBody() user: User) {
+    return await this.userRepo.create(user);
   }
 
-  @get('/user')
+  @get('/login/users')
   async getAllUsers(): Promise<Array<User>> {
     return await this.userRepo.find();
   }

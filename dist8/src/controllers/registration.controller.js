@@ -28,14 +28,14 @@ let RegistrationController = class RegistrationController {
     }
 };
 __decorate([
-    rest_1.post('/reg/user'),
+    rest_1.post('/reg/users'),
     __param(0, rest_1.requestBody()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [user_1.User]),
     __metadata("design:returntype", Promise)
 ], RegistrationController.prototype, "createUser", null);
 __decorate([
-    rest_1.get('/reg/user'),
+    rest_1.get('/reg/users'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)

@@ -20,22 +20,22 @@ let LoginController = class LoginController {
     constructor(userRepo) {
         this.userRepo = userRepo;
     }
-    async sendUser(user) {
-        return await this.userRepo.create(user_1.User);
+    async sendLogin(user) {
+        return await this.userRepo.create(user);
     }
     async getAllUsers() {
         return await this.userRepo.find();
     }
 };
 __decorate([
-    rest_1.post('/users'),
+    rest_1.post('/login/users'),
     __param(0, rest_1.requestBody()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [user_1.User]),
     __metadata("design:returntype", Promise)
-], LoginController.prototype, "sendUser", null);
+], LoginController.prototype, "sendLogin", null);
 __decorate([
-    rest_1.get('/user'),
+    rest_1.get('/login/users'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
