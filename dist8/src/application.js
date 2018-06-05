@@ -24,7 +24,12 @@ class CharityAppApiApplication extends boot_1.BootMixin(repository_1.RepositoryM
         };
         var dataSourceConfig = new repository_1.juggler.DataSource({
             name: "db",
-            connector: "memory"
+            connector: "loopback-connector-mysql",
+            host: 'localhost',
+            port: 3306,
+            database: 'golden_thread',
+            user: 'root',
+            password: 'password'
         });
         this.dataSource(dataSourceConfig);
     }

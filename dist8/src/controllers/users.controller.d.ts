@@ -5,4 +5,5 @@ export declare class UsersController {
     constructor(userRepo: UserRepository);
     getAllUsers(): Promise<Array<User>>;
     getAllUsersbyID(id: number): Promise<User>;
+    deleteUserbyID(id: number): Promise<boolean>;
 }

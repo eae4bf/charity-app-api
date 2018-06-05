@@ -1,6 +1,6 @@
 import { repository } from "@loopback/repository";
 import { UserRepository } from "../repositories/user.repository";
-import { post, get, requestBody } from "@loopback/rest";
+import { post, get, requestBody, HttpErrors } from "@loopback/rest";
 import { User } from "../models/user";
 import { Login } from "../models/login";
 
@@ -10,32 +10,34 @@ export class LoginController {
     @repository(UserRepository.name) private userRepo: UserRepository
   ) { }
 
-  @post('/login/users')
-  async sendLogin(@requestBody() user: User) {
-    return await this.userRepo.create(user);
-  }
-
-  @get('/login/users')
-  async getAllUsers(): Promise<Array<User>> {
-    return await this.userRepo.find();
-  }
 
   @post("/login")
   async login(@requestBody() login: Login) {
-    var users = await this.userRepo.find();
-    var username = login.username;
-    var password = login.password;
 
-    var i;
-    for (i = 0; i < users.length; i++) {
-      var user = users[i];
-      if (user.username === username && user.password === password) {
-        return user;
-      }
+    if(!login.username || !login.password){
+      throw new HttpErrors.Unauthorized('invalid');
     }
 
-    return "Username or password is incorrect"
 
+    let userExists: boolean = !!(await this.userRepo.count({
+      and: [
+        { username: login.username },
+        { password: login.password },
+      ],
+    }));
+
+    if (!userExists) {
+      throw new HttpErrors.Unauthorized('invalid');
+    }
+
+    return await this.userRepo.findOne({
+      where: {
+        and: [
+          { username: login.username },
+          { password: login.password }
+        ],
+      },
+    });
   }
 
 

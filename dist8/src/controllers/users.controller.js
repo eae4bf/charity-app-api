@@ -23,7 +23,23 @@ let UsersController = class UsersController {
         return await this.userRepo.find();
     }
     async getAllUsersbyID(id) {
+        let userExists = !!(await this.userRepo.count({ id }));
+        if (!userExists) {
+            throw new rest_1.HttpErrors.BadRequest(`user ID ${id} does not exist`);
+        }
         return await this.userRepo.findById(id);
+    }
+    async deleteUserbyID(id) {
+        let userDeleted = false;
+        let userExists = !!(await this.userRepo.count({ id }));
+        if (userExists) {
+            this.userRepo.deleteById(id);
+            userDeleted = true;
+        }
+        else {
+            throw new rest_1.HttpErrors.BadRequest(`user ID ${id} does not exist`);
+        }
+        return userDeleted;
     }
 };
 __decorate([
@@ -33,12 +49,19 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "getAllUsers", null);
 __decorate([
-    rest_1.get('/usersID/id'),
+    rest_1.get('/usersID/{id}'),
     __param(0, rest_1.param.path.number('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "getAllUsersbyID", null);
+__decorate([
+    rest_1.post('/users'),
+    __param(0, rest_1.param.path.number('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "deleteUserbyID", null);
 UsersController = __decorate([
     __param(0, repository_1.repository(user_repository_1.UserRepository.name)),
     __metadata("design:paramtypes", [user_repository_1.UserRepository])
