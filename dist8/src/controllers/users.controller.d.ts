@@ -4,6 +4,7 @@ export declare class UsersController {
     private userRepo;
     constructor(userRepo: UserRepository);
     getAllUsers(): Promise<Array<User>>;
-    getAllUsersbyID(id: number): Promise<User>;
-    deleteUserbyID(id: number): Promise<boolean>;
+    getAllUsersbyID(user_id: number): Promise<User>;
+    deleteUserbyID(user_id: number): Promise<boolean>;
+    getDonationsByUserId(id: number, dateFrom: Date): Promise<void>;
 }

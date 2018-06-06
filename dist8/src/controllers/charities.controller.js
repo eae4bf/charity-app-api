@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const repository_1 = require("@loopback/repository");
 const charity_repository_1 = require("../repositories/charity.repository");
 const rest_1 = require("@loopback/rest");
+const charity_1 = require("../models/charity");
 let CharityController = class CharityController {
     constructor(charityRepo) {
         this.charityRepo = charityRepo;
@@ -22,12 +23,22 @@ let CharityController = class CharityController {
     async getAllCharities() {
         return await this.charityRepo.find();
     }
-    async getAllCharitiesbyID(id) {
-        let charityExists = !!(await this.charityRepo.count({ id }));
+    async getAllCharitiesbyID(charity_id) {
+        let charityExists = !!(await this.charityRepo.count({ charity_id }));
         if (!charityExists) {
-            throw new rest_1.HttpErrors.BadRequest(`user ID ${id} does not exist`);
+            throw new rest_1.HttpErrors.BadRequest(`charity ID ${charity_id} does not exist`);
         }
-        return await this.charityRepo.findById(id);
+        return await this.charityRepo.findById(charity_id);
+    }
+    async createCharity(charity) {
+        if (!charity.name) {
+            throw new rest_1.HttpErrors.BadRequest('missing data');
+        }
+        let charityExists = !!(await this.charityRepo.count({ name: charity.name }));
+        if (charityExists) {
+            throw new rest_1.HttpErrors.BadRequest('charity already exists');
+        }
+        return await this.charityRepo.create(charity);
     }
 };
 __decorate([
@@ -37,12 +48,19 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], CharityController.prototype, "getAllCharities", null);
 __decorate([
-    rest_1.get('/charitiesID/{id}'),
-    __param(0, rest_1.param.path.number('id')),
+    rest_1.get('/charitiesID/{charity_id}'),
+    __param(0, rest_1.param.path.number('charity_id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], CharityController.prototype, "getAllCharitiesbyID", null);
+__decorate([
+    rest_1.post('/reg/charities'),
+    __param(0, rest_1.requestBody()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [charity_1.Charity]),
+    __metadata("design:returntype", Promise)
+], CharityController.prototype, "createCharity", null);
 CharityController = __decorate([
     __param(0, repository_1.repository(charity_repository_1.CharityRepository)),
     __metadata("design:paramtypes", [charity_repository_1.CharityRepository])

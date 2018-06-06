@@ -1,6 +1,12 @@
 import { Entity } from '@loopback/repository';
 export declare class Charity extends Entity {
-    id?: number;
+    charity_id?: number;
     name: string;
-    getCharityId(): any;
+    description: string;
+    deepDescription: string;
+    charityCardImg: string;
+    charityImg: string;
+    website: string;
+    logo: string;
+    getCharityId(): number | undefined;
 }
