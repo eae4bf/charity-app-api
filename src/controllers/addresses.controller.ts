@@ -16,6 +16,19 @@ export class AddressController {
         return await this.addressRepo.find();
     }
 
+    // @get('/address/id')
+    // async findAddressbyUserId(@param.path.number('user_id') user_id: number): Promise<Address> {
+    //     let userExists: boolean = !!(await this.userRepo.count({ user_id }));
+    //     if (!userExists) {
+    //       throw new HttpErrors.BadRequest(`user ID ${user_id} does not exist`);
+    //     }
+    //     let addressExists: boolean = !!(await this.addressRepo.count({ user_id }));
+    //     if (!userExists) {
+    //       throw new HttpErrors.BadRequest(`user ID ${user_id} does not exist`);
+    //     }
+    
+    // }
+
 
     @post('/reg/address')
     async createAddress(@requestBody() address: Address) {

@@ -7,7 +7,7 @@ export class Charity extends Entity {
         type: 'number',
         id: true
     })
-    charity_id?: number;
+    id?: number;
 
     @property({
         type: 'string',
@@ -46,6 +46,6 @@ export class Charity extends Entity {
     logo: string;
 
     getCharityId() {
-        return this.charity_id;
+        return this.id;
     }
 }

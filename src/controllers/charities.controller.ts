@@ -13,14 +13,14 @@ export class CharityController {
         return await this.charityRepo.find();
     }
 
-    @get('/charitiesID/{charity_id}')
-    async getAllCharitiesbyID(@param.path.number('charity_id') charity_id: number): Promise<Charity> {
-        let charityExists: boolean = !!(await this.charityRepo.count({ charity_id }));
+    @get('/charitiesID/{id}')
+    async getAllCharitiesbyID(@param.path.number('id') id: number): Promise<Charity> {
+        let charityExists: boolean = !!(await this.charityRepo.count({ id }));
 
         if (!charityExists) {
-            throw new HttpErrors.BadRequest(`charity ID ${charity_id} does not exist`);
+            throw new HttpErrors.BadRequest(`charity ID ${id} does not exist`);
         }
-        return await this.charityRepo.findById(charity_id);
+        return await this.charityRepo.findById(id);
     }
 
     @post('/reg/charities')

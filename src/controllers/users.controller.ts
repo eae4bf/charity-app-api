@@ -15,51 +15,49 @@ export class UsersController {
     }
 
 
-    @get('/usersID/{user_id}')
-    async getAllUsersbyID(@param.path.number('cuser_id') user_id: number): Promise<User> {
+    @get('/usersID/{id}')
+    async getAllUsersbyID(@param.path.number('id') id: number): Promise<User> {
         
-        let userExists: boolean = !!(await this.userRepo.count({ user_id }));
+        let userExists: boolean = !!(await this.userRepo.count({ id }));
 
         if (!userExists) {
-          throw new HttpErrors.BadRequest(`user ID ${user_id} does not exist`);
+          throw new HttpErrors.BadRequest(`user ID ${id} does not exist`);
         }
 
-        return await this.userRepo.findById(user_id);
+        return await this.userRepo.findById(id);
     }
 
     @post('/users')
-    async deleteUserbyID(@param.path.number('user_id') user_id: number) {
+    async deleteUserbyID(@param.path.number('id') id: number) {
 
         let userDeleted: boolean = false;
 
-        let userExists: boolean = !!(await this.userRepo.count({ user_id }));
+        let userExists: boolean = !!(await this.userRepo.count({ id }));
 
         if (userExists) {
-          this.userRepo.deleteById(user_id);
+          this.userRepo.deleteById(id);
           userDeleted = true;
         }
         else {
-            throw new HttpErrors.BadRequest(`user ID ${user_id} does not exist`);
+            throw new HttpErrors.BadRequest(`user ID ${id} does not exist`);
         }
         return userDeleted;
     }
 
-    // @patch('/users')
-    // async changeUserPassword(@param.path.string('password') newPassword: string) {
-    //     "password": newPassword
-    // }
-
-
-    @get('users/{user_id}/donations') 
-    async getDonationsByUserId(
-        @param.path.number('user_id') id: number,   
-        @param.query.date('date_from') dateFrom: Date,   
-    ) {
-        console.log(id)
-        console.log(dateFrom)
-        console.log('donation')
+    @patch('/user/{id}')
+    async updateUserById(
+      @param.path.number('id') id: number,
+      @requestBody() user: User,
+    ): Promise<boolean> {
+      id = +id;
+      return await this.userRepo.updateById(id, user);
     }
 
+    @get('users/{id}/donations') 
+    async getDonationsByUserId(
+        @param.path.number('id') id: number,   
+        @param.query.date('date_from') dateFrom: Date,   
+    ) {
 
-
+    }
 }

@@ -7,22 +7,27 @@ export class Post extends Entity {
         type: 'number',
         id: true
     })
-    post_id?: number;
+    id?: number;
 
     @property({
-        type: 'string',
+        type: 'string'
     })
     title: string;
 
     @property({
-        type: 'string',
+        type: 'string'
     })
     description: string;
 
     @property({
-        type: 'string',
+        type: 'string'
     })
     postImg: string;
+
+    @property({
+        type: 'string'
+    })
+    date: Date;
 
     @property({
         type: 'number',
@@ -31,7 +36,7 @@ export class Post extends Entity {
     project_id: number;
 
     getPostId() {
-        return this.post_id;
+        return this.id;
     }
 
 

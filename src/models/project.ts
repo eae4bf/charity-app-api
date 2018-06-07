@@ -7,7 +7,7 @@ export class Project extends Entity {
         type: 'number',
         id: true
     })
-    project_id?: number;
+    id?: number;
 
     @property({
         type: 'number',
@@ -32,6 +32,6 @@ export class Project extends Entity {
   
     
     getProjectId() {
-        return this.project_id;
+        return this.id;
     }
 }

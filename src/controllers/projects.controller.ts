@@ -18,14 +18,14 @@ export class ProjectController {
     }
 
     @get('/charities/:id/projects/:id')
-    async getAllProjectsbyID(@param.path.number('project_id') project_id: number): Promise<Project> {
-        let projectExists: boolean = !!(await this.projectRepo.count({ project_id }));
+    async getAllProjectsbyID(@param.path.number('id') id: number): Promise<Project> {
+        let projectExists: boolean = !!(await this.projectRepo.count({ id }));
 
         if (!projectExists) {
-            throw new HttpErrors.BadRequest(`project ID ${project_id} does not exist`);
+            throw new HttpErrors.BadRequest(`project ID ${id} does not exist`);
         }
 
-        return await this.projectRepo.findById(project_id);
+        return await this.projectRepo.findById(id);
     }
 
 

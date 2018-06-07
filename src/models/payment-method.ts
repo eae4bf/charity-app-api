@@ -7,7 +7,7 @@ export class PaymentMethod extends Entity {
         type: 'number',
         id: true
     })
-    paymentMethod_id?: number;
+    id?: number;
 
     @property({
         type: 'number',
@@ -47,7 +47,7 @@ export class PaymentMethod extends Entity {
     address_id: number;
 
     getPaymentMethodId() {
-        return this.paymentMethod_id;
+        return this.id;
     }
 
 

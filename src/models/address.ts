@@ -7,7 +7,7 @@ export class Address extends Entity {
         type: 'number',
         id: true
     })
-    address_id?: number;
+    id?: number;
 
     @property({
         type: 'number',
@@ -41,6 +41,6 @@ export class Address extends Entity {
     phoneNum: string;
 
     getAddressId() {
-        return this.address_id;
+        return this.id;
     }
 }
