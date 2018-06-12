@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const repository_1 = require("@loopback/repository");
 let Donation = class Donation extends repository_1.Entity {
     getDonationId() {
-        return this.donation_id;
+        return this.id;
     }
 };
 __decorate([
@@ -21,7 +21,7 @@ __decorate([
         id: true
     }),
     __metadata("design:type", Number)
-], Donation.prototype, "donation_id", void 0);
+], Donation.prototype, "id", void 0);
 __decorate([
     repository_1.property({
         type: 'number',

@@ -24,12 +24,12 @@ let ProjectController = class ProjectController {
     async getAllProjects() {
         return await this.projectRepo.find();
     }
-    async getAllProjectsbyID(project_id) {
-        let projectExists = !!(await this.projectRepo.count({ project_id }));
+    async getAllProjectsbyID(id) {
+        let projectExists = !!(await this.projectRepo.count({ id }));
         if (!projectExists) {
-            throw new rest_1.HttpErrors.BadRequest(`project ID ${project_id} does not exist`);
+            throw new rest_1.HttpErrors.BadRequest(`project ID ${id} does not exist`);
         }
-        return await this.projectRepo.findById(project_id);
+        return await this.projectRepo.findById(id);
     }
 };
 __decorate([
@@ -40,7 +40,7 @@ __decorate([
 ], ProjectController.prototype, "getAllProjects", null);
 __decorate([
     rest_1.get('/charities/:id/projects/:id'),
-    __param(0, rest_1.param.path.number('project_id')),
+    __param(0, rest_1.param.path.number('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)

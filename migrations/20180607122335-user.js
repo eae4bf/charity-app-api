@@ -35,7 +35,7 @@ exports.up = function(db, callback) {
       length: 50
     },
     dob: {
-      type: 'date'
+      type: 'string'
     },
     email: {
       type: 'string',

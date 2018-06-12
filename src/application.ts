@@ -1,10 +1,11 @@
-import {ApplicationConfig} from '@loopback/core';
-import {RestApplication, RestServer, RestBindings} from '@loopback/rest';
-import {MySequence} from './sequence';
+import { ApplicationConfig } from '@loopback/core';
+import { RestApplication, RestServer, RestBindings } from '@loopback/rest';
+import { MySequence } from './sequence';
+
 
 /* tslint:disable:no-unused-variable */
 // Binding and Booter imports are required to infer types for BootMixin!
-import {BootMixin, Booter, Binding} from '@loopback/boot';
+import { BootMixin, Booter, Binding } from '@loopback/boot';
 import {
   Class,
   Repository,
@@ -38,12 +39,22 @@ export class CharityAppApiApplication extends BootMixin(
       connector: "loopback-connector-mysql",
       host: 'localhost',
       port: 3306,
-      database: 'golden_thread',
+      database: 'goldenThread',
       user: 'root',
       password: 'password'
     });
+
+    // // Use below for an in-memory database
+    // var dataSourceConfig = new juggler.DataSource({
+    //   name: "db",
+    //   connector: 'memory'
+    // });
+
     this.dataSource(dataSourceConfig);
+
   }
+
+
 
   async start() {
     await super.start();
@@ -51,6 +62,6 @@ export class CharityAppApiApplication extends BootMixin(
     const server = await this.getServer(RestServer);
     const port = await server.get(RestBindings.PORT);
     console.log(`Server is running at http://127.0.0.1:${port}`);
-    console.log(`Try http://127.0.0.1:${port}/ping`);
+    console.log(`Try http://127.0.0.1:${port}/swagger-ui`);
   }
 }

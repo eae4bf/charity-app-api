@@ -5,4 +5,5 @@ export declare class LoginController {
     private userRepo;
     constructor(userRepo: UserRepository);
     login(login: Login): Promise<User>;
+    loginWithQuery(login: Login): Promise<User>;
 }

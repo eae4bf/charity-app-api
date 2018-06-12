@@ -1,7 +1,8 @@
 import { Entity } from '@loopback/repository';
 export declare class Project extends Entity {
-    project_id?: number;
+    id?: number;
     charity_id: number;
+    title: string;
     description: string;
     projectImg: string;
     getProjectId(): number | undefined;

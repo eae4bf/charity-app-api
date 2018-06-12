@@ -20,6 +20,7 @@ let RegistrationController = class RegistrationController {
     constructor(userRepo) {
         this.userRepo = userRepo;
     }
+    // @post('/reg/users')
     async createUser(user) {
         if (!user.username || !user.password) {
             throw new rest_1.HttpErrors.BadRequest('missing data');
@@ -39,7 +40,7 @@ let RegistrationController = class RegistrationController {
     }
 };
 __decorate([
-    rest_1.post('/reg/users'),
+    rest_1.post('/registration'),
     __param(0, rest_1.requestBody()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [user_1.User]),

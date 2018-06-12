@@ -17,7 +17,7 @@ const post_repository_1 = require("../repositories/post.repository");
 const project_repository_1 = require("../repositories/project.repository");
 const rest_1 = require("@loopback/rest");
 const post_1 = require("../models/post");
-let UsersController = class UsersController {
+let PostController = class PostController {
     constructor(postRepo, projectRepo) {
         this.postRepo = postRepo;
         this.projectRepo = projectRepo;
@@ -36,12 +36,12 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [post_1.Post]),
     __metadata("design:returntype", Promise)
-], UsersController.prototype, "createPost", null);
-UsersController = __decorate([
+], PostController.prototype, "createPost", null);
+PostController = __decorate([
     __param(0, repository_1.repository(post_repository_1.PostRepository)),
     __param(1, repository_1.repository(project_repository_1.ProjectRepository)),
     __metadata("design:paramtypes", [post_repository_1.PostRepository,
         project_repository_1.ProjectRepository])
-], UsersController);
-exports.UsersController = UsersController;
+], PostController);
+exports.PostController = PostController;
 //# sourceMappingURL=posts.controller.js.map

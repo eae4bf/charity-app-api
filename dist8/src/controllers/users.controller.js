@@ -15,65 +15,82 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const repository_1 = require("@loopback/repository");
 const user_repository_1 = require("../repositories/user.repository");
 const rest_1 = require("@loopback/rest");
+const user_1 = require("../models/user");
+// import {sign, verify} from 'jsonwebtoken';
 let UsersController = class UsersController {
     constructor(userRepo) {
         this.userRepo = userRepo;
     }
-    async getAllUsers() {
+    async getAllUsers(jwt) {
+        if (!jwt)
+            throw new rest_1.HttpErrors.Unauthorized('JWT token is required.');
+        // try {
+        //   var jwtBody = verify(jwt, 'shh');
+        //   console.log(jwtBody);
+        //   return jwtBody;
+        // } catch (err) {
+        //   throw new HttpErrors.BadRequest('JWT token invalid');
+        // }
         return await this.userRepo.find();
     }
-    async getAllUsersbyID(user_id) {
-        let userExists = !!(await this.userRepo.count({ user_id }));
+    async getAllUsersbyID(id) {
+        let userExists = !!(await this.userRepo.count({ id }));
         if (!userExists) {
-            throw new rest_1.HttpErrors.BadRequest(`user ID ${user_id} does not exist`);
+            throw new rest_1.HttpErrors.BadRequest(`user ID ${id} does not exist`);
         }
-        return await this.userRepo.findById(user_id);
+        return await this.userRepo.findById(id);
     }
-    async deleteUserbyID(user_id) {
+    async deleteUserbyID(id) {
         let userDeleted = false;
-        let userExists = !!(await this.userRepo.count({ user_id }));
+        let userExists = !!(await this.userRepo.count({ id }));
         if (userExists) {
-            this.userRepo.deleteById(user_id);
+            this.userRepo.deleteById(id);
             userDeleted = true;
         }
         else {
-            throw new rest_1.HttpErrors.BadRequest(`user ID ${user_id} does not exist`);
+            throw new rest_1.HttpErrors.BadRequest(`user ID ${id} does not exist`);
         }
         return userDeleted;
     }
-    // @patch('/users')
-    // async changeUserPassword(@param.path.string('password') newPassword: string) {
-    //     "password": newPassword
-    // }
+    async updateUserById(id, user) {
+        id = +id;
+        return await this.userRepo.updateById(id, user);
+    }
     async getDonationsByUserId(id, dateFrom) {
-        console.log(id);
-        console.log(dateFrom);
-        console.log('donation');
     }
 };
 __decorate([
     rest_1.get('/users'),
+    __param(0, rest_1.param.query.string('jwt')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "getAllUsers", null);
 __decorate([
-    rest_1.get('/usersID/{user_id}'),
-    __param(0, rest_1.param.path.number('cuser_id')),
+    rest_1.get('/usersID/{id}'),
+    __param(0, rest_1.param.path.number('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "getAllUsersbyID", null);
 __decorate([
     rest_1.post('/users'),
-    __param(0, rest_1.param.path.number('user_id')),
+    __param(0, rest_1.param.path.number('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "deleteUserbyID", null);
 __decorate([
-    rest_1.get('users/{user_id}/donations'),
-    __param(0, rest_1.param.path.number('user_id')),
+    rest_1.patch('/user/{id}'),
+    __param(0, rest_1.param.path.number('id')),
+    __param(1, rest_1.requestBody()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, user_1.User]),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "updateUserById", null);
+__decorate([
+    rest_1.get('users/{id}/donations'),
+    __param(0, rest_1.param.path.number('id')),
     __param(1, rest_1.param.query.date('date_from')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number, Date]),

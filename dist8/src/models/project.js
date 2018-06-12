@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const repository_1 = require("@loopback/repository");
 let Project = class Project extends repository_1.Entity {
     getProjectId() {
-        return this.project_id;
+        return this.id;
     }
 };
 __decorate([
@@ -21,7 +21,7 @@ __decorate([
         id: true
     }),
     __metadata("design:type", Number)
-], Project.prototype, "project_id", void 0);
+], Project.prototype, "id", void 0);
 __decorate([
     repository_1.property({
         type: 'number',
@@ -29,6 +29,12 @@ __decorate([
     }),
     __metadata("design:type", Number)
 ], Project.prototype, "charity_id", void 0);
+__decorate([
+    repository_1.property({
+        type: 'string',
+    }),
+    __metadata("design:type", String)
+], Project.prototype, "title", void 0);
 __decorate([
     repository_1.property({
         type: 'string',

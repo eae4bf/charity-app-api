@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const repository_1 = require("@loopback/repository");
 let Post = class Post extends repository_1.Entity {
     getPostId() {
-        return this.post_id;
+        return this.id;
     }
 };
 __decorate([
@@ -21,19 +21,31 @@ __decorate([
         id: true
     }),
     __metadata("design:type", Number)
-], Post.prototype, "post_id", void 0);
+], Post.prototype, "id", void 0);
 __decorate([
     repository_1.property({
-        type: 'string',
+        type: 'string'
     }),
     __metadata("design:type", String)
-], Post.prototype, "name", void 0);
+], Post.prototype, "title", void 0);
 __decorate([
     repository_1.property({
-        type: 'string',
+        type: 'string'
     }),
     __metadata("design:type", String)
 ], Post.prototype, "description", void 0);
+__decorate([
+    repository_1.property({
+        type: 'string'
+    }),
+    __metadata("design:type", String)
+], Post.prototype, "postImg", void 0);
+__decorate([
+    repository_1.property({
+        type: 'string'
+    }),
+    __metadata("design:type", Date)
+], Post.prototype, "date", void 0);
 __decorate([
     repository_1.property({
         type: 'number',

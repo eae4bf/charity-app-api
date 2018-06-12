@@ -16,6 +16,7 @@ const repository_1 = require("@loopback/repository");
 const user_repository_1 = require("../repositories/user.repository");
 const rest_1 = require("@loopback/rest");
 const login_1 = require("../models/login");
+// import {sign, verify} from 'jsonwebtoken';
 let LoginController = class LoginController {
     constructor(userRepo) {
         this.userRepo = userRepo;
@@ -41,6 +42,45 @@ let LoginController = class LoginController {
                 ],
             },
         });
+        // var users = await this.userRepo.find();
+        // var email = login.email;
+        // var password = login.password;
+        // for (var i = 0; i < users.length; i++) {
+        //   var user = users[i];
+        //   if (user.email == email && user.password == password) {
+        //     var jwt = sign(
+        //       {
+        //         user: {
+        //           id: user.id,
+        //           firstname: user.firstname,
+        //           email: user.email
+        //         },
+        //         anything: "hello"
+        //       },
+        //       'shh',
+        //       {
+        //         issuer: 'auth.ix.co.za',
+        //         audience: 'ix.co.za',
+        //       },
+        //     );
+        //     return {
+        //       token: jwt,
+        //     };
+        //   }
+    }
+    //   throw new HttpErrors.Unauthorized('User not found, sorry!');
+    //   //return "Error";
+    // }
+    async loginWithQuery(login) {
+        var users = await this.userRepo.find({
+            where: {
+                and: [{ email: login.email }, { password: login.password }],
+            },
+        });
+        if (users.length == 0) {
+            throw new rest_1.HttpErrors.NotFound('User not found, sorry!');
+        }
+        return users[0];
     }
 };
 __decorate([
@@ -50,6 +90,13 @@ __decorate([
     __metadata("design:paramtypes", [login_1.Login]),
     __metadata("design:returntype", Promise)
 ], LoginController.prototype, "login", null);
+__decorate([
+    rest_1.post('/login-with-query'),
+    __param(0, rest_1.requestBody()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [login_1.Login]),
+    __metadata("design:returntype", Promise)
+], LoginController.prototype, "loginWithQuery", null);
 LoginController = __decorate([
     __param(0, repository_1.repository(user_repository_1.UserRepository.name)),
     __metadata("design:paramtypes", [user_repository_1.UserRepository])

@@ -27,10 +27,15 @@ class CharityAppApiApplication extends boot_1.BootMixin(repository_1.RepositoryM
             connector: "loopback-connector-mysql",
             host: 'localhost',
             port: 3306,
-            database: 'golden_thread',
+            database: 'goldenThread',
             user: 'root',
             password: 'password'
         });
+        // // Use below for an in-memory database
+        // var dataSourceConfig = new juggler.DataSource({
+        //   name: "db",
+        //   connector: 'memory'
+        // });
         this.dataSource(dataSourceConfig);
     }
     async start() {
@@ -38,7 +43,7 @@ class CharityAppApiApplication extends boot_1.BootMixin(repository_1.RepositoryM
         const server = await this.getServer(rest_1.RestServer);
         const port = await server.get(rest_1.RestBindings.PORT);
         console.log(`Server is running at http://127.0.0.1:${port}`);
-        console.log(`Try http://127.0.0.1:${port}/ping`);
+        console.log(`Try http://127.0.0.1:${port}/swagger-ui`);
     }
 }
 exports.CharityAppApiApplication = CharityAppApiApplication;

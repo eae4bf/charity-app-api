@@ -10,8 +10,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const repository_1 = require("@loopback/repository");
-let Charity = class Charity extends repository_1.Entity {
-    getCharityId() {
+let Address = class Address extends repository_1.Entity {
+    getAddressId() {
         return this.id;
     }
 };
@@ -21,52 +21,46 @@ __decorate([
         id: true
     }),
     __metadata("design:type", Number)
-], Charity.prototype, "id", void 0);
+], Address.prototype, "id", void 0);
 __decorate([
     repository_1.property({
-        type: 'string',
-        required: true
+        type: 'number',
+        id: true
     }),
-    __metadata("design:type", String)
-], Charity.prototype, "name", void 0);
+    __metadata("design:type", Number)
+], Address.prototype, "user_id", void 0);
 __decorate([
     repository_1.property({
-        type: 'string',
+        type: 'string'
     }),
     __metadata("design:type", String)
-], Charity.prototype, "description", void 0);
+], Address.prototype, "addressLine", void 0);
 __decorate([
     repository_1.property({
-        type: 'string',
+        type: 'string'
     }),
     __metadata("design:type", String)
-], Charity.prototype, "deepDescription", void 0);
+], Address.prototype, "country", void 0);
 __decorate([
     repository_1.property({
-        type: 'string',
+        type: 'string'
     }),
     __metadata("design:type", String)
-], Charity.prototype, "charityCardImg", void 0);
+], Address.prototype, "state", void 0);
 __decorate([
     repository_1.property({
-        type: 'string',
+        type: 'string'
     }),
     __metadata("design:type", String)
-], Charity.prototype, "charityImg", void 0);
+], Address.prototype, "zipCode", void 0);
 __decorate([
     repository_1.property({
-        type: 'string',
+        type: 'string'
     }),
     __metadata("design:type", String)
-], Charity.prototype, "website", void 0);
-__decorate([
-    repository_1.property({
-        type: 'string',
-    }),
-    __metadata("design:type", String)
-], Charity.prototype, "logo", void 0);
-Charity = __decorate([
+], Address.prototype, "phoneNum", void 0);
+Address = __decorate([
     repository_1.model()
-], Charity);
-exports.Charity = Charity;
-//# sourceMappingURL=charity.js.map
+], Address);
+exports.Address = Address;
+//# sourceMappingURL=address.js.map

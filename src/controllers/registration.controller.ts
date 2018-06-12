@@ -9,7 +9,8 @@ export class RegistrationController {
     @repository(UserRepository.name) private userRepo: UserRepository
   ) {}
 
-  @post('/reg/users')
+  // @post('/reg/users')
+  @post('/registration')
   async createUser(@requestBody() user: User) {
 
     if (!user.username || !user.password) {

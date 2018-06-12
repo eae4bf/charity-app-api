@@ -35,8 +35,9 @@ export class User extends Entity {
 
     @property({
         type: 'string',
+        default: '1-1-2018'
     })
-    dob: Date;
+    dob: string;
 
     @property({
         type: 'string',

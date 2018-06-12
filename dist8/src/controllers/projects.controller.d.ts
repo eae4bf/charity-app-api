@@ -6,5 +6,5 @@ export declare class ProjectController {
     private charityRepo;
     constructor(projectRepo: ProjectRepository, charityRepo: CharityRepository);
     getAllProjects(): Promise<Array<Project>>;
-    getAllProjectsbyID(project_id: number): Promise<Project>;
+    getAllProjectsbyID(id: number): Promise<Project>;
 }
