@@ -3,9 +3,9 @@ import { User } from "../models/user";
 export declare class UsersController {
     private userRepo;
     constructor(userRepo: UserRepository);
-    getAllUsers(jwt: string): Promise<Array<User>>;
+    getAllUsers(): Promise<Array<User>>;
+    getUserbyKey(jwt: string): Promise<string | object>;
     getAllUsersbyID(id: number): Promise<User>;
-    deleteUserbyID(id: number): Promise<boolean>;
+    deleteUserbyID(id: number): Promise<void>;
     updateUserById(id: number, user: User): Promise<boolean>;
-    getDonationsByUserId(id: number, dateFrom: Date): Promise<void>;
 }

@@ -16,7 +16,8 @@ const repository_1 = require("@loopback/repository");
 const user_repository_1 = require("../repositories/user.repository");
 const rest_1 = require("@loopback/rest");
 const login_1 = require("../models/login");
-// import {sign, verify} from 'jsonwebtoken';
+const jsonwebtoken_1 = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 let LoginController = class LoginController {
     constructor(userRepo) {
         this.userRepo = userRepo;
@@ -28,49 +29,36 @@ let LoginController = class LoginController {
         let userExists = !!(await this.userRepo.count({
             and: [
                 { username: login.username },
-                { password: login.password },
             ],
         }));
         if (!userExists) {
             throw new rest_1.HttpErrors.Unauthorized('invalid');
         }
-        return await this.userRepo.findOne({
-            where: {
-                and: [
-                    { username: login.username },
-                    { password: login.password }
-                ],
-            },
-        });
-        // var users = await this.userRepo.find();
-        // var email = login.email;
-        // var password = login.password;
-        // for (var i = 0; i < users.length; i++) {
-        //   var user = users[i];
-        //   if (user.email == email && user.password == password) {
-        //     var jwt = sign(
-        //       {
-        //         user: {
-        //           id: user.id,
-        //           firstname: user.firstname,
-        //           email: user.email
-        //         },
-        //         anything: "hello"
-        //       },
-        //       'shh',
-        //       {
-        //         issuer: 'auth.ix.co.za',
-        //         audience: 'ix.co.za',
-        //       },
-        //     );
-        //     return {
-        //       token: jwt,
-        //     };
-        //   }
+        else {
+            var currentUser = await this.userRepo.findOne({
+                where: {
+                    and: [
+                        { email: login.email },
+                    ],
+                },
+            });
+            let same = await bcrypt.compare(login.password, currentUser.password);
+            if (same) {
+                var jwt = jsonwebtoken_1.sign({
+                    user: currentUser,
+                }, 'shh', {
+                    issuer: 'auth.ix.co.za',
+                    audience: 'ix.co.za',
+                });
+                return {
+                    token: jwt,
+                };
+            }
+            else {
+                throw new rest_1.HttpErrors.Unauthorized('Invalid Login Information');
+            }
+        }
     }
-    //   throw new HttpErrors.Unauthorized('User not found, sorry!');
-    //   //return "Error";
-    // }
     async loginWithQuery(login) {
         var users = await this.userRepo.find({
             where: {

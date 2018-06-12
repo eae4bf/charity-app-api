@@ -4,6 +4,7 @@ import { post, get, requestBody, HttpErrors, param } from "@loopback/rest";
 import { User } from "../models/user";
 import { Login } from "../models/login";
 import { sign, verify } from 'jsonwebtoken';
+import * as bcrypt from 'bcrypt';
 
 export class LoginController {
 
@@ -22,39 +23,43 @@ export class LoginController {
     let userExists: boolean = !!(await this.userRepo.count({
       and: [
         { username: login.username },
-        { password: login.password },
       ],
     }));
 
     if (!userExists) {
       throw new HttpErrors.Unauthorized('invalid');
     }
+    else {
+      var currentUser = await this.userRepo.findOne({
+        where: {
+          and: [
+            { email: login.email },
+          ],
+        },
+      });
 
-    var currentUser = await this.userRepo.findOne({
-      where: {
-        and: [
-          { email: login.email },
-          { password: login.password }
-        ],
-      },
-    });
-    var jwt = sign(
-      {
-        user: currentUser,
-      },
-      'shh',
-      {
-        issuer: 'auth.ix.co.za',
-        audience: 'ix.co.za',
-      },
-    );
+      let same = await bcrypt.compare(login.password, currentUser.password);
 
-    return {
-      token: jwt,
-    };
+      if (same) {
+        var jwt = sign(
+          {
+            user: currentUser,
+          },
+          'shh',
+          {
+            issuer: 'auth.ix.co.za',
+            audience: 'ix.co.za',
+          },
+        );
 
-    // throw new HttpErrors.Unauthorized('User not found, sorry!');
-    // //return "Error";
+        return {
+          token: jwt,
+        };
+      }
+      else {
+        throw new HttpErrors.Unauthorized('Invalid Login Information');
+      }
+    }
   }
 
 

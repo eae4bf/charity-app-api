@@ -16,11 +16,11 @@ const repository_1 = require("@loopback/repository");
 const user_repository_1 = require("../repositories/user.repository");
 const rest_1 = require("@loopback/rest");
 const user_1 = require("../models/user");
+const bcrypt = require("bcrypt");
 let RegistrationController = class RegistrationController {
     constructor(userRepo) {
         this.userRepo = userRepo;
     }
-    // @post('/reg/users')
     async createUser(user) {
         if (!user.username || !user.password) {
             throw new rest_1.HttpErrors.BadRequest('missing data');
@@ -33,7 +33,17 @@ let RegistrationController = class RegistrationController {
         if (emailExists) {
             throw new rest_1.HttpErrors.BadRequest('email is already registered');
         }
-        return await this.userRepo.create(user);
+        let hashedPassword = await bcrypt.hash(user.password, 10);
+        var userToStore = new user_1.User();
+        userToStore.firstname = user.firstname;
+        userToStore.lastname = user.lastname;
+        userToStore.username = user.username;
+        userToStore.email = user.email;
+        userToStore.dob = user.dob;
+        userToStore.password = hashedPassword;
+        let storedUser = await this.userRepo.create(userToStore);
+        storedUser.password = "";
+        return storedUser;
     }
     async getAllUsers() {
         return await this.userRepo.find();

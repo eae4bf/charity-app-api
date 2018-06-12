@@ -16,22 +16,25 @@ const repository_1 = require("@loopback/repository");
 const user_repository_1 = require("../repositories/user.repository");
 const rest_1 = require("@loopback/rest");
 const user_1 = require("../models/user");
-// import {sign, verify} from 'jsonwebtoken';
+const jsonwebtoken_1 = require("jsonwebtoken");
 let UsersController = class UsersController {
     constructor(userRepo) {
         this.userRepo = userRepo;
     }
-    async getAllUsers(jwt) {
+    async getAllUsers() {
+        return await this.userRepo.find();
+    }
+    async getUserbyKey(jwt) {
         if (!jwt)
             throw new rest_1.HttpErrors.Unauthorized('JWT token is required.');
-        // try {
-        //   var jwtBody = verify(jwt, 'shh');
-        //   console.log(jwtBody);
-        //   return jwtBody;
-        // } catch (err) {
-        //   throw new HttpErrors.BadRequest('JWT token invalid');
-        // }
-        return await this.userRepo.find();
+        try {
+            var jwtBody = jsonwebtoken_1.verify(jwt, 'shh');
+            console.log(jwtBody);
+            return jwtBody;
+        }
+        catch (err) {
+            throw new rest_1.HttpErrors.BadRequest('JWT token invalid');
+        }
     }
     async getAllUsersbyID(id) {
         let userExists = !!(await this.userRepo.count({ id }));
@@ -41,31 +44,32 @@ let UsersController = class UsersController {
         return await this.userRepo.findById(id);
     }
     async deleteUserbyID(id) {
-        let userDeleted = false;
         let userExists = !!(await this.userRepo.count({ id }));
         if (userExists) {
             this.userRepo.deleteById(id);
-            userDeleted = true;
         }
         else {
             throw new rest_1.HttpErrors.BadRequest(`user ID ${id} does not exist`);
         }
-        return userDeleted;
     }
     async updateUserById(id, user) {
         id = +id;
         return await this.userRepo.updateById(id, user);
     }
-    async getDonationsByUserId(id, dateFrom) {
-    }
 };
+__decorate([
+    rest_1.get('/users'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "getAllUsers", null);
 __decorate([
     rest_1.get('/users'),
     __param(0, rest_1.param.query.string('jwt')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
-], UsersController.prototype, "getAllUsers", null);
+], UsersController.prototype, "getUserbyKey", null);
 __decorate([
     rest_1.get('/usersID/{id}'),
     __param(0, rest_1.param.path.number('id')),
@@ -74,7 +78,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "getAllUsersbyID", null);
 __decorate([
-    rest_1.post('/users'),
+    rest_1.del('/users'),
     __param(0, rest_1.param.path.number('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),
@@ -88,14 +92,6 @@ __decorate([
     __metadata("design:paramtypes", [Number, user_1.User]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "updateUserById", null);
-__decorate([
-    rest_1.get('users/{id}/donations'),
-    __param(0, rest_1.param.path.number('id')),
-    __param(1, rest_1.param.query.date('date_from')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, Date]),
-    __metadata("design:returntype", Promise)
-], UsersController.prototype, "getDonationsByUserId", null);
 UsersController = __decorate([
     __param(0, repository_1.repository(user_repository_1.UserRepository.name)),
     __metadata("design:paramtypes", [user_repository_1.UserRepository])

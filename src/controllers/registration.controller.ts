@@ -2,6 +2,7 @@ import { repository } from "@loopback/repository";
 import { UserRepository } from "../repositories/user.repository";
 import { post, get, requestBody, HttpErrors } from "@loopback/rest";
 import { User } from "../models/user";
+import * as bcrypt from 'bcrypt';
 
 export class RegistrationController {
 
@@ -9,7 +10,7 @@ export class RegistrationController {
     @repository(UserRepository.name) private userRepo: UserRepository
   ) {}
 
-  // @post('/reg/users')
+
   @post('/registration')
   async createUser(@requestBody() user: User) {
 
@@ -29,7 +30,20 @@ export class RegistrationController {
       throw new HttpErrors.BadRequest('email is already registered');
     }
 
-    return await this.userRepo.create(user);
+
+    let hashedPassword = await bcrypt.hash(user.password, 10);
+
+    var userToStore = new User();
+    userToStore.firstname = user.firstname;
+    userToStore.lastname = user.lastname;
+    userToStore.username = user.username;
+    userToStore.email = user.email;
+    userToStore.dob = user.dob;
+    userToStore.password = hashedPassword;
+
+    let storedUser = await this.userRepo.create(userToStore);
+    storedUser.password = "";
+    return storedUser;
   }
 
   @get('/reg/users')

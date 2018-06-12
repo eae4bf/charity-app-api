@@ -4,6 +4,8 @@ import { post, get, del, patch, requestBody, Request, param, HttpErrors } from "
 import { User } from "../models/user";
 import {sign, verify} from 'jsonwebtoken';
 
+import * as bcrypt from 'bcrypt';
+
 export class UsersController {
 
     constructor(
